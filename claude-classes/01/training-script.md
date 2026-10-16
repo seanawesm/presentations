@@ -1,150 +1,338 @@
-# Rolling Out a Personal Agent in 30 Minutes — Trainer Script
+# Trainer Script — Your First Personal Agent in 30 Minutes
 
-**Audience:** non-technical. Nobody in the room should need to know what "MCP" or "context window" means.
-**Goal by the end:** everyone leaves with one working personal agent that (a) has a home folder, (b) is connected to one real tool, and (c) can run a task on a schedule without them lifting a finger.
-**Format:** you talk + demo on screen, they follow along on their own laptop at the same time.
-
-> ⚠️ Before you present: Claude Desktop's exact menu wording (Connectors, Schedules/Routines, Settings) can change between versions. Walk through Parts 3–5 on your own machine the morning of the session and swap in whatever the buttons actually say. Don't read this script's click-paths verbatim without checking first.
+**Audience:** non-technical. Nobody should need to know what "MCP," "context window," or "terminal" means — and you never say those words.
+**Format:** you demo on screen, they follow on their own laptop, in lockstep.
+**Outcome:** each attendee leaves with one agent that (1) has a home folder, (2) knows who they are, (3) is connected to one real account, and (4) does one job on a schedule.
 
 ---
 
-## What attendees need before the session starts
-
-Put this on the invite, not in the first 5 minutes of the room:
-
-- Claude Desktop installed and signed in
-- One account they're comfortable connecting for the demo (their own Gmail or Google Calendar is the easiest — avoid anything sensitive for a first try)
-- 30 uninterrupted minutes
+> ### ⚠️ Verify before you present
+> Claude Desktop changes often. The morning of the class, click through these on your own machine and write the *actual* button names into your notes:
+> 1. Where you start a **Claude Code** session in the Desktop app, and where you pick **Local** vs **Cloud**.
+> 2. Where you choose the **folder** for a local session.
+> 3. Where **Connectors** are added (Settings → Connectors on most versions), and that the one you'll demo shows up inside a Claude Code session.
+> 4. Where **scheduled tasks** live for local sessions, and how **routines** are created for cloud (the `/schedule` command or the web).
+> 5. That a local scheduled task actually fires while the app is open — run one with a 2-minute schedule.
+> 6. What the **permission prompt** looks like the first time Claude wants to edit a file, so you can warn the room before it appears.
 
 ---
 
-## Timing overview
+## Pre-work (send with the invite)
 
-| Part | Topic | Time |
+Ask attendees to arrive with:
+
+- [ ] Claude Desktop installed, updated, and signed in on a paid plan that includes Claude Code
+- [ ] Google (or Microsoft) account they're comfortable connecting — **a personal one, not a work account with admin restrictions** (work accounts are the #1 cause of connectors failing to authorize in the room)
+- [ ] A rough idea which agent they want: morning brief, email helper, or money check-in (link `scenarios.md`)
+- [ ] Laptop charged — scheduled tasks on a laptop stop when it sleeps
+
+## Your Plan B
+
+Things that will go wrong in a room of 20 non-technical laptops, and what you do:
+
+| If… | Then… |
+|---|---|
+| Someone's connector won't authorize | Pair them with a neighbour for that step, keep going. Their agent still works with just the folder and files. |
+| The Wi-Fi is slow | Skip live connector auth on your machine; show your pre-connected fallback agent instead. |
+| Someone falls behind | Every checkpoint below has a "catch-up" line. Don't stop the room for one person — the starter kits let them catch up afterwards. |
+| You're running out of time | Cut Part 6 (bonus) entirely. Part 5 is the last part everyone must finish. |
+
+---
+
+## Run of show
+
+| # | Part | Minutes | Running total |
+|---|---|---|---|
+| 0 | The four pieces (framing) | 3 | 3 |
+| 1 | Open Claude Desktop, start a Claude Code session | 2 | 5 |
+| 2 | Give it a desk: the workspace folder | 3 | 8 |
+| 3 | Local or Cloud? | 4 | 12 |
+| 4 | Give it a notebook: the three files + the interview | 6 | 18 |
+| 5 | Give it hands: one connector | 4 | 22 |
+| 6 | Give it an alarm clock: a schedule | 5 | 27 |
+| 7 | Bonus: make every run remember (binding) | 4 | 31 |
+| 8 | Wrap-up: your first week | 2 | 33 |
+
+You'll notice this reorders your original outline slightly: **the files come before the connector**. That's deliberate — the "interview" in Part 4 is the moment the room goes *"oh, it actually knows me"*, and it works without any connector, so nobody gets stuck waiting on a Google login before the good part.
+
+---
+
+## Part 0 — The four pieces (3 min)
+
+**Goal:** give them one mental model they can hang everything else on.
+
+**Say:**
+> "You've probably used Claude, or ChatGPT, as a chat window. You ask, it answers, and next week it's forgotten you exist. Today we're building something different: an *agent* — closer to a very literal personal assistant.
+>
+> Any assistant needs four things. A **desk** to work at. A **notebook** — what it knows about you and what it was in the middle of. **Hands** — access to the things it's helping with, like your calendar. And an **alarm clock** — so it does things without you having to ask.
+>
+> That's the whole class. Four pieces. We'll build them one at a time."
+
+**Show:** the four-pieces table from the README on screen. Leave it up or come back to it at every part ("that was the desk, now the notebook…").
+
+**Why this matters:** non-technical people get lost when every step feels like a new random setting. The four pieces turn 30 minutes of clicking into one story.
+
+---
+
+## Part 1 — Open Claude Desktop, start a Claude Code session (2 min)
+
+**Do:** open the Desktop app. Show the regular chat, then switch to **Claude Code**.
+
+**Say:**
+> "Same Claude you know, but this mode can work *with files on your computer* — read them, write them, keep them up to date. That's what lets it have a notebook. Regular chat can't do that."
+
+**Don't** explain what Claude Code is "for programmers." If someone asks: *"It started as a coding tool. It turns out a tool that's good at managing files and following instructions is also good at running your life admin."*
+
+**Checkpoint:** everyone sees the Claude Code start screen.
+**Catch-up:** "If you don't see it, you may need to update the app or your plan doesn't include it — follow along on screen, the starter kit will get you there after."
+
+---
+
+## Part 2 — Give it a desk: the workspace folder (3 min)
+
+**Do:** create a new folder in Documents. Name it after the **job**: `MorningBrief`, `EmailHelper`, `MoneyCheck`.
+
+**Say:**
+> "This folder is the agent's desk. Everything it knows and everything it produces lives here. One agent, one folder. If you build a second agent later, it gets its own folder — just like you wouldn't share one desk between your accountant and your personal trainer."
+
+**Tip to say out loud:** *"Name it after what it does, not 'Claude stuff.' In three months you'll have three of these, and you'll thank yourself."*
+
+**Checkpoint:** everyone has an empty folder with a job-name.
+
+---
+
+## Part 3 — Local or Cloud? (4 min)
+
+**Goal:** they understand *why* we pick Local today, and what Cloud is for — so the schedule step in Part 6 makes sense.
+
+**Do:** show where the session lets you choose. Pick **Local**, then select the folder from Part 2.
+
+**Say:**
+> "Claude can work in two places. *Local* means on your laptop, at the desk we just made. *Cloud* means on Anthropic's computers, somewhere else."
+
+**Show this table:**
+
+| | **Local** (today) | **Cloud** |
 |---|---|---|
-| 0 | Framing: what is a "personal agent"? | 2 min |
-| 1 | Open Claude Desktop | 2 min |
-| 2 | Create the agent's home folder | 5 min |
-| 3 | Local vs. Cloud — and why it matters | 5 min |
-| 4 | Connect one real tool | 5 min |
-| 5 | Make it run on a schedule | 5 min |
-| 6 | Bonus: make the schedule "remember" | 5 min |
-| 7 | Three files that make it smart | 3 min |
-| — | Wrap-up & questions | 3 min |
-
-Total: ~35 min including wrap-up — trim Part 6 first if you're short on time, it's explicitly the bonus round.
-
----
-
-## Part 0 — Framing (2 min)
-
-**Say:**
-"Think of this less like 'installing software' and more like hiring a very literal personal assistant. It doesn't know anything about you on day one. Everything it knows, it knows because you wrote it down somewhere it can read, or because you let it look at one of your accounts. Today we're going to give it a desk (a folder), a notebook (a couple of text files), and one task it does for you automatically."
-
-Don't define "AI agent" abstractly — just point at what you're about to build.
-
----
-
-## Part 1 — Open Claude Desktop (2 min)
-
-**Do:** open the app, point out the chat window and the sidebar.
-
-**Say:**
-"This is the same Claude you may have used in a browser, but it runs on your own computer and can be given access to files and folders on your machine. That local access is what today is really about."
-
----
-
-## Part 2 — Create the agent's home folder (5 min)
-
-**Do:** on your desktop or in Documents, create a plain folder. Name it after what the agent will do, not "Claude" — e.g. `MorningBriefAgent`, not `ClaudeStuff`.
-
-**Say:**
-"This folder is the agent's home base. Nothing magic about it yet — it's just a folder. In a few minutes we'll drop a couple of plain text files in here, and that's what turns it from 'a chat window' into 'something that remembers you between conversations.'"
-
-**Have attendees do the same**, naming their folder after whichever scenario they're building (see the Scenarios doc) — e.g. `EmailAgent`, `FinanceAdvisor`.
-
----
-
-## Part 3 — Local vs. Cloud, and why it matters (5 min)
-
-This is the part people skip past and then get confused by later. Don't skip it.
-
-**Say, in plain terms:**
-
-- **Local** means Claude Desktop, running on *your* computer, looking at *your* folder. It only works while your computer is on and the app is open. In exchange, it can read and write real files on your machine, and nothing leaves your computer unless you explicitly connect a tool.
-- **Cloud** means a version of the agent runs on Anthropic's servers instead of your laptop. It works even when your computer is off or asleep — which is the whole point of a *schedule* (Part 5). The tradeoff: it can't casually browse your local hard drive like the local version can; it only sees what you've explicitly connected it to (your email, your calendar, a shared doc, etc).
+| Where it runs | Your laptop | Anthropic's servers |
+| Sees the folder on your computer? | ✅ Yes — that's the point | ❌ No — it only sees what's online: connected accounts, or a project stored on GitHub |
+| Needs your laptop on? | ✅ Yes, and the app open | ❌ No — runs while you sleep |
+| Good for | Working *with* it; anything private you'd rather keep on your machine | Jobs that must happen even when your laptop is closed |
+| Setup for a beginner | Easy — pick a folder | Harder — its "desk" has to live online |
 
 **The rule of thumb to give them:**
-> "If it's something you want to sit and work on *with* the agent — writing, organizing files, thinking out loud — do it locally. If it's something that should just *happen* on its own every morning whether you're at your desk or not, that's a cloud schedule."
+> "Start Local. Always. It's easier, and you can see everything it does. Graduate to Cloud only for a job that genuinely has to run while your laptop is closed — and by then you'll know exactly what you want it to do."
 
-**Demo:** show the same folder/workspace available to both the local app and a cloud schedule, so they see it's the *same* agent, just two different ways of running it — not two separate products.
+**Why this matters (for you, the trainer):** the single most common confusion later is *"my cloud schedule ran but it didn't know anything about me."* That's because a cloud run can't see a folder on someone's laptop. If you plant that idea here, Part 7 is easy.
 
----
-
-## Part 4 — Connect one real tool (5 min)
-
-**Do:** open Connectors (or whatever your version calls integrations), add exactly **one** — Gmail or Google Calendar is the friendliest first demo.
-
-**Say:**
-"A connector is a hookup to one of your real accounts — email, calendar, a notes app, whatever. Without one, the agent only knows what's in its folder. With one, it can actually look things up or take action for you. Start with one. You can always add more later — most people regret adding five connectors on day one and then not knowing which one broke."
-
-**Have attendees connect the one matching their scenario.**
+**Checkpoint:** everyone has a Local session open, pointed at their folder.
 
 ---
 
-## Part 5 — Make it run on a schedule (5 min)
+## Part 4 — Give it a notebook: three files + the interview (6 min)
 
-**Do:** create a schedule/routine: a plain-language instruction plus how often to run it (e.g. "every weekday at 8am, check my calendar and email, and summarize what matters today").
+This is the heart of the class. Slow down here.
+
+### 4a — The three files (2 min)
 
 **Say:**
-"This is the cloud half from Part 3 in action. You're not writing code — you're writing one sentence describing what you want done and how often. The agent runs that sentence on Anthropic's servers on the schedule you set, using whatever connector you gave it."
+> "Here's the secret most people miss. Claude, every time it starts, automatically reads **one** file in its folder: `CLAUDE.md`. That's its job description. Anything else, it only reads if the job description tells it to."
 
-**Have attendees write their own one-line schedule** for their scenario (see Scenarios doc for starting points).
+**Show:**
+
+| File | Plain-English | Analogy | Changes… |
+|---|---|---|---|
+| `CLAUDE.md` | Who it helps, how it behaves, its hard rules — and "always read the other two files" | Job description | Rarely |
+| `memory.md` | Facts about you: preferences, people, recurring things, decisions | Notebook | When facts change |
+| `progress.md` | Where things stand right now and what's next — nothing else | Sticky note on the desk | Every run, **replaced**, not added to |
+
+**The line that makes the whole system work** — show it in the `CLAUDE.md`:
+
+```markdown
+## Always load
+@memory.md
+@progress.md
+```
+
+> "Those two lines tell Claude: *every time you start, also read these.* Without them, your notebook is just sitting in a drawer."
+
+### 4b — Don't write them yourself. Let it interview you. (4 min)
+
+This is the "aha" moment of the class. Have everyone type this into their session:
+
+```
+I'd like you to be my [morning brief / email / money] assistant.
+Before we start, interview me — one question at a time, no more than
+8 questions — to learn what you need to know to do this well.
+When we're done, create three files in this folder:
+- CLAUDE.md: short instructions and hard rules for this job, and
+  load memory.md and progress.md using @ imports
+- memory.md: the facts you learned about me
+- progress.md: "Current state" and "Next step" only
+Show me each file before you save it.
+```
+
+**Say while it runs:**
+> "Notice: you didn't write a single file. You just had a conversation. It wrote its own job description and notebook — and asked permission before saving. *That's* the pattern you'll use forever: talk to it, let it write things down, check what it wrote."
+
+**Warn them before it happens:** "The first time it wants to create a file, it'll ask permission. That's good. Click allow."
+
+**Checkpoint:** three files exist in their folder. Have them open `memory.md` in the folder and read it.
+**Catch-up:** "If the interview stalled, copy the three files from the starter kit for your scenario — they're pre-filled, just edit the facts."
+
+**Prove it worked:** start a **new** session in the same folder and ask *"What do you know about me?"* It answers from `memory.md`. This is the moment they believe it.
 
 ---
 
-## Part 6 — Bonus: make the schedule "remember" (5 min)
+## Part 5 — Give it hands: one connector (4 min)
 
-Only do this part if Parts 1–5 landed and there's time left.
+**Do:** add one connector — Google Calendar is the safest demo (looking at a calendar can't break anything). Gmail second.
 
 **Say:**
-"Right now, every time the schedule runs, it's a little bit like groundhog day — it does the task but doesn't necessarily remember what it told you yesterday. If you point the schedule at the *same folder* you created in Part 2 — the one with its notes in it — it can read what happened last time before it acts this time. That's the difference between 'a task that repeats' and 'an assistant that's actually tracking something over weeks.'"
+> "A connector is a pair of hands into one of your accounts. You sign in once with the normal Google sign-in — you never type a password into Claude, and nothing goes in a text file."
 
-**Do:** show binding the schedule to the workspace folder from Part 2, so each run can read/update the files in it.
+**Teach the three levels of hands** (they'll use this vocabulary for the rest of their life with agents):
 
-This is the bridge into Part 7 — the files are *what* it remembers with.
+| Level | It can… | Example | Start here? |
+|---|---|---|---|
+| 👀 **Look** | Read only | "What's on my calendar tomorrow?" | ✅ Yes |
+| ✍️ **Draft** | Prepare something for you to approve | "Draft a reply to Sam" | After a week |
+| 🖐️ **Act** | Do it without asking | "Send it" | Only for low-stakes things, and only with a rule in `CLAUDE.md` |
+
+**Test it immediately** — have everyone ask:
+```
+What are my next three calendar events? Use what you know about
+me from memory.md to tell me which one matters most.
+```
+That one prompt shows **hands + notebook working together**. Point that out.
+
+**Checkpoint:** the agent answers with real events.
+**Catch-up:** "If your account wouldn't connect, skip to Part 6 — your agent still works with the folder, you'll connect it at home."
 
 ---
 
-## Part 7 — Three files that make it smart (3 min)
+## Part 6 — Give it an alarm clock: a schedule (5 min)
 
-**Say:**
-"You don't need a filing system or a folder structure — three plain text files, sitting right in the folder, cover almost everyone's first agent. No subfolders yet; add one later only if the agent starts producing real files you need to keep, like an `exports/` folder — don't build structure before there's something to put in it."
+### 6a — Two kinds of alarm clock (1 min)
 
-| File | What goes in it | Analogy |
+Tie back to Part 3:
+
+| | **Scheduled task** (local) | **Routine** (cloud) |
 |---|---|---|
-| `CLAUDE.md` | Short, *stable* instructions only — who it's helping, tone, hard rules ("never send an email without showing me first") | The job description |
-| `memory.md` | Durable facts that can change over time — your timezone, recurring commitments, preferences, decisions, who's who | Its notebook |
-| `progress.md` | Where things stand *right now*, and what to do next — nothing else | A sticky note, not a diary |
+| Runs on | Your laptop, with the Desktop app open | Anthropic's servers |
+| Laptop asleep? | Skips that run (or catches up when it wakes) | Runs anyway |
+| Reads your folder & notebook? | ✅ Yes, automatically | Only if the notebook lives online (GitHub, Notion, Drive) |
+| Today | ✅ We use this | Shown, not built |
 
-**Say the two mistakes almost everyone makes** — this is the single most useful thing in this whole session:
+### 6b — Writing the instruction (2 min)
 
-> **Mistake 1: letting `progress.md` grow into a log.**
-> It's tempting to add a new entry every session and never delete the old ones. Don't. `progress.md` should be *overwritten* each time: "here's where things stand, here's what's next" — not a history. A file with fifty sessions of narrative in it means the agent has to wade through noise to find today's one fact, and it will eventually miss it.
->
-> **Mistake 2: turning `CLAUDE.md` into a dumping ground.**
-> Every one-off fact — "the client's name is X," "we decided to use Y" — gets pasted into `CLAUDE.md` because it's the file people know about, until it's 500 lines and the agent stops reading all of it. The test: if it's a fact that might change later, it belongs in `memory.md`. `CLAUDE.md` should stay short enough to reread in full, every single time.
+**Say:**
+> "A schedule is just a message you'd normally type, set to send itself. So the only skill is writing that message well."
 
-**Say the one rule that prevents most of what's left:**
-> "Update `memory.md`, don't duplicate it. If it says your meeting is Tuesdays and it changes to Wednesdays, edit that line — don't just add a new one and leave the old one in there confusing it."
+**Show the formula** (it's on their handout):
 
-See the Tips doc and Scenarios doc for filled-in examples per use case.
+> **WHEN** it runs → **WHAT** to look at → **WHAT** to produce → **WHERE** to put it → **WHAT NOT** to do → **UPDATE** progress
+
+**Bad vs good:**
+
+❌ *"Check my email."*
+
+✅
+```
+Every weekday at 8:00:
+Look at today's calendar and anything in my inbox from the last
+16 hours. Using what you know about me in memory.md, write a
+brief of no more than 10 lines — time-sensitive items first.
+Save it as briefs/today.md and show it to me.
+Do not reply to, archive, or accept anything.
+Then replace progress.md with today's state and anything I need
+to follow up on tomorrow.
+```
+
+> "Every line in that second version prevents a real problem. No time window — it reads your whole inbox. No length limit — you get an essay. No 'do not' — it might helpfully archive something. No progress update — tomorrow it starts from zero."
+
+### 6c — Run it once by hand, then schedule it (2 min)
+
+**Do:** paste the instruction into the session and run it **now**, by hand. Look at the output together. Then set it as a scheduled task.
+
+**Say:**
+> "Never schedule something you haven't watched run once. If it does something odd while you're watching, it'll do something odd at 8am while you're not."
+
+**Warn them about the one thing that silently breaks schedules:**
+> "If the scheduled run hits a permission question — 'can I save this file?' — and you're not there to click allow, it just waits. When you ran it by hand just now and it asked for permission, choose the option that *remembers* that permission for this folder."
+
+**Checkpoint:** a scheduled task exists. **Optional wow:** set one to run in 2 minutes and watch it fire before the class ends.
 
 ---
 
-## Wrap-up & questions (3 min)
+## Part 7 — Bonus: make every run remember (4 min)
+
+*Cut this part first if you're short on time.*
+
+**Goal:** they see *why* the notebook + schedule together are more than the sum of their parts.
 
 **Say:**
-"You now have: a folder, one connected tool, one scheduled task, and three files it uses to stay consistent over time. That's the whole pattern — every more advanced thing you build later is just more of the same four pieces."
+> "Here's what happens every time that alarm goes off:"
 
-Point them at the Scenarios doc to pick their own project after the session, and the Tips doc for when something goes wrong.
+```
+⏰ 8:00 — scheduled task starts, in your folder
+   ↓
+📄 reads CLAUDE.md  → "I'm your morning brief assistant, here are my rules"
+   ↓  (@ imports)
+📓 reads memory.md  → "Sean is in Dublin, standup is Mondays at 10"
+📌 reads progress.md → "Yesterday I flagged the client call moved to 2pm"
+   ↓
+🤝 uses connectors  → looks at today's calendar and inbox
+   ↓
+✍️  writes the brief → briefs/today.md
+   ↓
+📌 replaces progress.md → "Today's state, tomorrow's follow-ups"
+```
+
+> "That last step is what makes it an assistant instead of an alarm. Tomorrow's run starts where today's left off. Over a few weeks, it's tracking things you'd forgotten you asked about."
+
+**For the curious — making a *cloud* routine remember:** it can't see the laptop folder, so the notebook has to live somewhere online that the routine can reach: a GitHub repository (the clean way — the routine runs inside it), or a Notion page/Google Doc it reads and updates via a connector (the no-code way). Name this as the "next class" topic rather than doing it live.
+
+### Optional add-on: one skill (if the room is fast)
+
+**Say:**
+> "Once you notice yourself asking for the same thing the same way, save it as a *skill* — a recipe card. It lives in a hidden folder called `.claude/skills/`, and Claude pulls out the right recipe when the job matches."
+
+Show `starter-kits/morning-brief/.claude/skills/morning-brief/SKILL.md` on screen. Point out it's just plain English with a name and a "use when…" line at the top.
+
+**Tip:** the `.claude` folder is hidden. On a Mac, press **Cmd + Shift + .** in Finder to show hidden files; on Windows, View → Show → Hidden items.
+
+---
+
+## Part 8 — Wrap-up: your first week (2 min)
+
+**Say:**
+> "Four pieces: desk, notebook, hands, alarm clock. Everything you build from here — more agents, more connectors, more schedules — is just more of the same four pieces."
+
+**Give them the first-week plan** (also on the handout):
+
+| Day | Do this | Why |
+|---|---|---|
+| 1 | Let today's schedule run. Read the output. | See it work without you |
+| 2 | Correct one thing: "Remember that I…" | Watch `memory.md` change |
+| 3 | Open `progress.md`. Is it a short sticky note, or a growing diary? | Catch the #1 mistake early |
+| 4–5 | Ask it to do one thing differently; let it update `CLAUDE.md` | Tune the job description |
+| 6 | Notice anything you've asked the same way 3 times → "save that as a skill" | Your first recipe |
+| 7 | Read all three files yourself. Delete anything stale. | Five minutes of housekeeping prevents weeks of drift |
+
+**Close with:**
+> "Don't add a second connector or a second schedule until the first has run cleanly for a week. The people who get the most out of this are the ones who start boring."
+
+---
+
+## Appendix — When something breaks live
+
+| What they see | What to say / do |
+|---|---|
+| "It says it can't access my calendar" | Connector not authorized in this session, or a work account blocking it. Re-check Settings → Connectors; try a personal account. |
+| "It forgot what I told it" | It was said in chat but never written down. Ask: *"Save that to memory.md."* Teach the phrase **"remember that…"** |
+| "It created a file somewhere weird" | Session isn't pointed at their folder — check the folder shown for the session. |
+| "My `CLAUDE.md` exists but it ignores memory.md" | The `@memory.md` lines are missing. Add them. |
+| "The schedule didn't run" | Laptop asleep / app closed, or it's stuck on a permission prompt. Open the app and check the task's last run. |
+| "It's asking permission for everything" | Normal for the first session. Choose the "allow for this folder" option when offered. |
+| "Is this safe?" | See `faq.md` — but the short version: it can only touch what you connect, it asks before acting, and you set the hard rules in `CLAUDE.md`. |
