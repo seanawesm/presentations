@@ -2,3 +2,4 @@
 *.log
 .claude/settings.local.json
 claude-classes/*/attendee-prep/
+christian/
